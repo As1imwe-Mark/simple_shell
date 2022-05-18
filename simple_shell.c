@@ -168,13 +168,12 @@ int sh_cd(char **args)
 {
 	if (args[1] == NULL)
 	{
-		fprintf(stderr, "expected argument to cd");
-	} else
+		chdir(getenv("HOME"));
+		return (1);
+	}
+	if (chdir(args[1]) != 0)
 	{
-		if (chdir(args[1]) != 0)
-		{
-			perror("cd error");
-		}
+		perror("cd error");
 	}
 	return (1);
 }
