@@ -130,9 +130,11 @@ char *sh_read_line(void)
 
 int sh_exit(char **args);
 
-char *builtin_str[] = { "exit" };
+int sh_cd(char **args);
 
-int (*builtin_func[]) (char **) = { &sh_exit };
+char *builtin_str[] = { "exit", "cd" };
+
+int (*builtin_func[]) (char **) = { &sh_exit, &sh_cd };
 
 /**
 * lsh_num_builtins - return size of str
@@ -156,6 +158,28 @@ int sh_exit(char **args)
 	printf("%s\n", args[i]);
 	return (0);
 }
+
+/**
+* sh_cd - used to change dir
+* @args: array of arguments
+* Return: 1 upon success
+*/
+int sh_cd(char **args)
+{
+	if (args[1] == NULL)
+	{
+		fprintf(stderr, "expected argument to cd");
+	} else
+	{
+		if (chdir(args[1]) != 0)
+		{
+			perror("cd error");
+		}
+	}
+	return (1);
+}
+
+
 /**
 * sh_execute - launches a builtin or a process
 * @args: list of arguments
